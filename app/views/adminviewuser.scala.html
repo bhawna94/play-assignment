@@ -1,0 +1,39 @@
+@(userList: List[RegisterdUserInfo])(implicit messages :MessagesProvider,request: RequestHeader,flash:Flash)
+@import helper._
+
+
+@main("view"){
+
+@flash.get("msg")
+<center>
+
+
+
+    <table class="table-striped table-bordered" width="1000">
+
+        <tr>
+
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile-No</th>
+            <th>Enable-User</th>
+            <th>Disable-User</th>
+        </tr>
+
+
+        @for(user <- userList){
+        <tr>
+
+            <td>@user.fname</td>
+            <td>@user.email</td>
+            <td>@user.mobile</td>
+            <td> <a href="@routes.AdminController.disableUser(user.email)">Disable</a></td>
+            <td><a href="@routes.AdminController.enableUser(user.email)">Enable</a></td>
+
+
+        </tr>
+        }
+
+    </table>
+</center>
+}

@@ -1,0 +1,18 @@
+@(recordForm: Form[UpdateUserProfile])(implicit messages :MessagesProvider,request: RequestHeader)
+@import helper._
+@main("title"){
+
+<div class="container">
+    <div class="jumbotron" align="center" >
+
+@helper.form(action=routes.UpdatedProfileController.updateDetails){
+@CSRF.formField
+@helper.inputText(recordForm("fname"),'_label -> "First Name",'_showConstraints ->false)
+@helper.inputText(recordForm("mname"),'_label -> "Middle Name")
+@helper.inputText(recordForm("lname"),'_label -> "Last Name",'_showConstraints ->false)
+@helper.inputText(recordForm("age"),'_label -> "Age",'_showConstraints -> false)
+<input type="submit" class="btn btn-danger"value="Update"> </input>
+}
+    </div>
+</div>
+}

@@ -1,0 +1,30 @@
+@(recordForm: Form[UserData])(implicit messages :MessagesProvider,request: RequestHeader)
+@import helper._
+@main("title"){
+
+@if(recordForm.hasGlobalErrors) {
+<u1>
+    @for(error<-recordForm.globalErrors) {
+    <li> @Messages(error.messages,error.args)</li>
+    }
+</u1>
+}
+<div class="container">
+    <div class="jumbotron" align="center" >
+
+@helper.form(action=routes.RegistrationController.userPost()){
+@CSRF.formField
+@helper.inputText(recordForm("firstName"),'_label -> "First Name",'_showConstraints ->false)
+@helper.inputText(recordForm("middleName"),'_label -> "Middle Name")
+@helper.inputText(recordForm("lastName"),'_label -> "Last Name",'_showConstraints ->false)
+@helper.inputText(recordForm("email"),'_label -> "Email",'_showConstraints -> false)
+@helper.inputPassword(recordForm("password"), '_label ->"Password",'_showConstraints -> false)
+@helper.inputPassword(recordForm("confirmPassword"),'_label -> "Confirm Password", '_showConstraints -> false)
+@helper.inputText(recordForm("mobileNumber"),'_label -> "Mobile Number",'_showConstraints -> false)
+@helper.inputRadioGroup(recordForm("gender"),Seq("female" -> "Female", "male"->"Male"),'_label ->"Gender",'_showConstraints ->false)
+@helper.inputText(recordForm("age"),'_label -> "Age", '_showConstraints -> false)
+<input type="submit" class="btn btn-danger" value="submit"> </input>
+}
+    </div>
+</div>
+}

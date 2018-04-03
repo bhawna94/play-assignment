@@ -1,0 +1,31 @@
+@(assignmentList: List[AssignmentInfo])(implicit messages :MessagesProvider,request: RequestHeader)
+@import helper._
+
+
+@main("view"){
+
+<center>
+
+
+    <table class="table-striped table-bordered" width="1000">
+
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+
+        </tr>
+
+
+        @for(assignment <- assignmentList){
+        <tr>
+            <td>@assignment.id</td>
+            <td>@assignment.title</td>
+            <td>@assignment.description</td>
+
+        </tr>
+        }
+
+    </table>
+</center>
+}

@@ -1,0 +1,27 @@
+@(recordForm: Form[LoginForm])(implicit messages :MessagesProvider,request: RequestHeader,flash:Flash)
+@import helper._
+
+
+@main("login"){
+<br/>
+<br/>
+<div align="center">
+    <strong> @flash.get("msg")</strong>
+</div>
+
+<div class="container">
+    <div class="jumbotron" align="center" >
+
+@helper.form(action=routes.LoginController.loginPost()){
+@CSRF.formField
+@helper.inputText(recordForm("email"),'_label->"Email",'_showConstraints -> false)
+@helper.inputPassword(recordForm("password"),'_label->"Password",'_showConstraints -> false)
+<input type="submit" class="btn btn-danger"value="SignIn"> </input>&nbsp; &nbsp; &nbsp;
+
+        }
+        <a href="@routes.ForgotPasswordController.viewForm">Forgot?</a>
+    </div>
+
+
+</div>
+}

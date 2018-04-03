@@ -1,0 +1,22 @@
+@(assgnForm: Form[Assignment])(implicit messages :MessagesProvider,request: RequestHeader,flash:Flash)
+@import helper._
+
+
+@main("title"){
+<div align="center">
+    <strong>@flash.get("success")</strong>
+</div>
+
+<div class="container">
+    <div class="jumbotron" align="center" >
+
+@helper.form(action=routes.AdminController.addAssignment()){
+@CSRF.formField
+@helper.inputText(assgnForm("title"),'_label -> "Title",'_showConstraints ->false)
+@helper.textarea(assgnForm("description"),'_label -> "Description",'_showConstraints ->false)
+
+<input type="submit" class="btn btn-danger" value="submit"> </input>
+    </div>
+</div>
+}
+}

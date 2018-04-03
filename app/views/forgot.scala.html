@@ -1,0 +1,26 @@
+@(recordForm: Form[UpdatePassword])(implicit messages :MessagesProvider,request: RequestHeader,flash:Flash)
+@import helper._
+@main("title"){
+
+@if(recordForm.hasGlobalErrors) {
+<u1>
+    @for(error<-recordForm.globalErrors) {
+    <li> @Messages(error.messages,error.args)</li>
+    }
+</u1>
+}
+<div class="container">
+    <div class="jumbotron" align="center" >
+
+@flash.get("msg")
+@helper.form(action=routes.ForgotPasswordController.updatePassword()){
+@CSRF.formField
+@helper.inputText(recordForm("email"),'_label -> "Email",'_showConstraints ->false)
+@helper.inputPassword(recordForm("newPassword"),'_label -> "New Password",'_showConstraints ->false)
+@helper.inputPassword(recordForm("confirmPassword"),'_label -> "Confirm Name",'_showConstraints ->false)
+
+<input type="submit" class="btn btn-danger" value="Update"> </input>
+    </div>
+</div>
+        }
+}

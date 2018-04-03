@@ -1,0 +1,34 @@
+@(assignmentList: List[AssignmentInfo])(implicit messages :MessagesProvider,request: RequestHeader,flash:Flash)
+@import helper._
+
+
+@main("view"){
+
+<center>
+<h4>@flash.get("success")</h4>
+    <h4>@flash.get("failure")</h4>
+
+
+<table class="table-striped table-bordered" width="1000">
+
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Delete</th>
+    </tr>
+
+
+    @for(assignment <- assignmentList){
+    <tr>
+        <td>@assignment.id</td>
+        <td>@assignment.title</td>
+        <td>@assignment.description</td>
+
+        <td><a href="@routes.AdminController.deleteAssignment(assignment.id)">delete</a></td>
+    </tr>
+    }
+
+</table>
+</center>
+}

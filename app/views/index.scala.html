@@ -1,0 +1,17 @@
+@()
+
+@main("Welcome") {
+</br>
+</br>
+<div class="container">
+    <div class="jumbotron" align="center">
+
+<form action="@routes.RegistrationController.register()">
+    <input type="submit"class="btn btn-danger"  value="SignUp" />
+</form><br/><br/>
+<form action="@routes.LoginController.login()">
+    <input type="submit" class="btn btn-danger" value="SignIn" />
+</form>
+    </div>
+</div>
+}
