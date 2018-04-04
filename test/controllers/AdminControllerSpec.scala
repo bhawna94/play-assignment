@@ -1,6 +1,6 @@
 package controllers
 
-import models.{AssignmentInfo, AssignmentInfoRepo, RegisterdUserInfo, UserInfoRepo}
+import models._
 import org.mockito.Mockito.when
 import org.scalatestplus.play.PlaySpec
 import org.specs2.mock.Mockito
@@ -32,12 +32,16 @@ class AdminControllerSpec extends PlaySpec with Mockito {
     status(result) must equal (OK)
   }
 
- /* "display Assignment" in {
+
+  "display Assignment" in {
     val controller = getMockedObject
-    when(controller.adminController.assignmentForm) thenReturn (controller.adminController.assignmentForm)
-    val result = controller.adminController.displayAssignmentForm().apply(FakeRequest())
+    when(controller.mockedUserForm.assignmentForm) thenReturn {val form = new UserForm{}
+    form.assignmentForm}
+    val result = controller.adminController.displayAssignmentForm().apply(FakeRequest()
+      .withCSRFToken)
     status(result) must equal(OK)
-  }*/
+  }
+
 
 
   "view User" in {
@@ -56,13 +60,14 @@ class AdminControllerSpec extends PlaySpec with Mockito {
 
     val mockedUserInfoRepository = mock[UserInfoRepo]
     val mockedAssignmentInfoRepository = mock[AssignmentInfoRepo]
+    val mockedUserForm = mock[UserForm]
 
-    val controller = new AdminController(stubControllerComponents(),mockedAssignmentInfoRepository,mockedUserInfoRepository)
+    val controller = new AdminController(stubControllerComponents(),mockedUserForm,mockedAssignmentInfoRepository,mockedUserInfoRepository)
 
-    TestObj(stubControllerComponents(),controller,mockedUserInfoRepository,mockedAssignmentInfoRepository)
+    TestObj(stubControllerComponents(),mockedUserForm,controller,mockedUserInfoRepository,mockedAssignmentInfoRepository)
   }
 
-  case class TestObj(controllerComponent: ControllerComponents,adminController: AdminController
+  case class TestObj(controllerComponent: ControllerComponents,mockedUserForm:UserForm,adminController: AdminController
                      ,mockedUserInfoRepository:UserInfoRepo,mockedAssignmentInfoRepository:AssignmentInfoRepo)
 
 }

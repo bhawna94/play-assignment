@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import models.{AssignmentInfo, AssignmentInfoRepo, UserInfoRepo}
+import models.{AssignmentInfo, AssignmentInfoRepo, UserForm, UserInfoRepo}
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, text}
 import play.api.i18n.I18nSupport
@@ -12,16 +12,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-case class Assignment(title: String,description: String)
-class AdminController  @Inject()(cc: ControllerComponents,assignmentInfoRepo: AssignmentInfoRepo,userInfoRepo: UserInfoRepo)
+
+class AdminController  @Inject()(cc: ControllerComponents,userForms:UserForm, assignmentInfoRepo:AssignmentInfoRepo,userInfoRepo: UserInfoRepo)
   extends AbstractController(cc) with I18nSupport {
   implicit val message = cc.messagesApi
-  val assignmentForm: Form[Assignment] = Form(
-    mapping(
-      "title" -> nonEmptyText,
-      "description" -> nonEmptyText
-    )(Assignment.apply)(Assignment.unapply)
-  )
+
 
 
 
@@ -30,11 +25,11 @@ class AdminController  @Inject()(cc: ControllerComponents,assignmentInfoRepo: As
   }
 
   def displayAssignmentForm(): Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.assignment(assignmentForm))
+    Ok(views.html.assignment(userForms.assignmentForm))
   }
 
   def addAssignment(): Action[AnyContent] = Action.async { implicit request =>
-    assignmentForm.bindFromRequest.fold(
+    userForms.assignmentForm.bindFromRequest.fold(
       formWithErrors => {
         Future.successful(BadRequest(views.html.assignment(formWithErrors)))
       },
@@ -52,9 +47,9 @@ class AdminController  @Inject()(cc: ControllerComponents,assignmentInfoRepo: As
   }
 
  def viewAssignment(): Action[AnyContent] = Action.async { implicit request  =>
-   val listOfAssignment: List[AssignmentInfo] = Await
-     .result(assignmentInfoRepo.getAssignment(),Duration.Inf)
-   Future.successful(Ok(views.html.adminviewassignment(listOfAssignment)))
+  val listOfAssignment = assignmentInfoRepo.getAssignment()
+   listOfAssignment.map(assignment => Ok(views.html.adminviewassignment(assignment)))
+
  }
 
   def deleteAssignment(id: Int): Action[AnyContent] = Action.async{
@@ -67,8 +62,8 @@ class AdminController  @Inject()(cc: ControllerComponents,assignmentInfoRepo: As
   }
 
   def viewUser(): Action[AnyContent] = Action.async { implicit request =>
-    val listOfUser = Await.result(userInfoRepo.getUser(),Duration.Inf)
-    Future.successful(Ok(views.html.adminviewuser(listOfUser)))
+    val listOfUser = userInfoRepo.getUser()
+    listOfUser.map(user => Ok(views.html.adminviewuser(user)))
   }
 
   def enableUser(emailId:String): Action[AnyContent] = Action.async { implicit request =>
